@@ -577,6 +577,129 @@
             transform: translateY(0);
         }
 
+        .favorite-toggle {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            border: 1px solid var(--store-line);
+            background: rgba(255,255,255,0.04);
+            color: var(--store-muted);
+            font-size: 1rem;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .favorite-toggle:hover {
+            border-color: rgba(255, 180, 84, 0.5);
+            color: var(--store-warn);
+        }
+
+        .game-card.is-favorite .favorite-toggle {
+            background: rgba(255,180,84,0.12);
+            border-color: rgba(255,180,84,0.4);
+            color: var(--store-warn);
+        }
+
+        .library-panel {
+            position: fixed;
+            top: 0;
+            right: -390px;
+            width: min(360px, calc(100vw - 20px));
+            height: 100vh;
+            z-index: 50;
+            background: rgba(8, 15, 24, 0.98);
+            border-left: 1px solid var(--store-line);
+            box-shadow: -22px 0 40px rgba(0,0,0,0.38);
+            transition: right 0.28s ease;
+            display: flex;
+            flex-direction: column;
+            padding: 22px 18px 18px;
+        }
+
+        .library-panel.open {
+            right: 0;
+        }
+
+        .library-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .library-panel-header h3 {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+
+        .library-close {
+            width: 38px;
+            height: 38px;
+            border: 1px solid var(--store-line);
+            background: rgba(255,255,255,0.04);
+            color: var(--store-text);
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .library-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow: auto;
+            padding-right: 4px;
+        }
+
+        .library-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            align-items: center;
+            padding: 12px 12px;
+            border: 1px solid var(--store-line);
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+        }
+
+        .library-item strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.98rem;
+        }
+
+        .library-item span {
+            color: var(--store-muted);
+            font-size: 0.74rem;
+        }
+
+        .library-item button {
+            border: 0;
+            background: rgba(103, 232, 183, 0.12);
+            color: var(--store-accent);
+            border-radius: 10px;
+            padding: 8px 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .empty-state {
+            display: none;
+            margin-top: 14px;
+            border: 1px dashed rgba(103, 232, 183, 0.35);
+            border-radius: 18px;
+            background: rgba(103, 232, 183, 0.04);
+            color: var(--store-muted);
+            padding: 20px 18px;
+            text-align: center;
+        }
+
+        .empty-state.visible {
+            display: block;
+        }
+
         .genre-grid {
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -940,6 +1063,7 @@
                 </div>
 
                 <div class="game-grid">
+                    <div class="empty-state" id="empty-state" aria-live="polite">No games match your current search. Try another title or filter.</div>
                     <article class="game-card" data-category="action">
                         <div class="game-thumb" style="background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=900&q=80');">
                             <span class="game-badge">Action</span>
@@ -1235,9 +1359,9 @@
                             <h4>Newsletter</h4>
                             <p>Get weekly game drops, discounts, and launch alerts.</p>
                             <div id="mc_embed_signup">
-                                <form class="subscribe_form relative mail_part">
-                                    <input type="email" placeholder="Email Address">
-                                    <button type="submit" class="email_icon newsletter-submit button-contactForm"><i class="far fa-paper-plane"></i></button>
+                                <form class="subscribe_form relative mail_part" id="newsletter-form">
+                                    <input id="newsletter-email" type="email" placeholder="Email Address" aria-label="Email Address" required>
+                                    <button type="submit" class="email_icon newsletter-submit button-contactForm" aria-label="Subscribe to newsletter"><i class="far fa-paper-plane"></i></button>
                                 </form>
                             </div>
                         </div>
@@ -1267,6 +1391,13 @@
             </div>
         </footer>
         <div class="store-toast" id="store-toast" role="status" aria-live="polite"></div>
+        <aside class="library-panel" id="library-panel" aria-label="Game library panel">
+            <div class="library-panel-header">
+                <h3>My library</h3>
+                <button type="button" class="library-close" id="library-close" aria-label="Close library">×</button>
+            </div>
+            <div class="library-list" id="library-list"></div>
+        </aside>
     </div>
 
     <script src="js/jquery-1.12.1.min.js"></script>
@@ -1288,6 +1419,12 @@
     <script src="js/custom.js"></script>
     <script>
         const toast = document.getElementById('store-toast');
+        const libraryPanel = document.getElementById('library-panel');
+        const libraryList = document.getElementById('library-list');
+        const libraryButton = document.getElementById('library-button');
+        const emptyState = document.getElementById('empty-state');
+        const libraryStorageKey = 'beko-play-library';
+
         const showToast = (message) => {
             toast.textContent = message;
             toast.classList.add('visible');
@@ -1295,33 +1432,183 @@
             window.storeToastTimer = window.setTimeout(() => toast.classList.remove('visible'), 2800);
         };
 
+        const libraryState = new Set(JSON.parse(localStorage.getItem(libraryStorageKey) || '[]'));
+
+        const saveLibrary = () => {
+            localStorage.setItem(libraryStorageKey, JSON.stringify([...libraryState]));
+        };
+
+        const renderLibrary = () => {
+            if (!libraryList) return;
+
+            libraryList.innerHTML = '';
+
+            if (!libraryState.size) {
+                libraryList.innerHTML = '<div class="empty-state visible">Your library is empty. Add a few games to start your collection.</div>';
+                return;
+            }
+
+            [...libraryState].forEach((gameName) => {
+                const item = document.createElement('div');
+                item.className = 'library-item';
+                item.innerHTML = `
+                    <div>
+                        <strong>${gameName}</strong>
+                        <span>Ready to play</span>
+                    </div>
+                    <button type="button">Open</button>
+                `;
+
+                item.querySelector('button').addEventListener('click', () => {
+                    showToast(`${gameName} is ready to launch.`);
+                });
+
+                libraryList.appendChild(item);
+            });
+        };
+
+        const refreshGameButtons = () => {
+            document.querySelectorAll('.game-card, .download-item').forEach((item) => {
+                const title = item.querySelector('h3, h4')?.textContent.trim();
+                const actionButton = item.querySelector('.download-btn');
+
+                if (!title || !actionButton) return;
+
+                const isAdded = libraryState.has(title);
+                actionButton.textContent = isAdded ? 'In library' : (actionButton.dataset.defaultLabel || 'Play now');
+                actionButton.dataset.state = isAdded ? 'added' : 'idle';
+                item.closest('.game-card')?.classList.toggle('is-favorite', isAdded);
+            });
+        };
+
+        const addGameToLibrary = (gameName) => {
+            const title = gameName.trim();
+            if (!title) return;
+
+            if (libraryState.has(title)) {
+                showToast(`${title} is already in your library.`);
+                return;
+            }
+
+            libraryState.add(title);
+            saveLibrary();
+            renderLibrary();
+            refreshGameButtons();
+            showToast(`${title} was added to your library.`);
+        };
+
+        const updateVisibleCards = () => {
+            const activeFilter = document.querySelector('.filter-pill.active')?.dataset.filter || 'all';
+            const query = document.getElementById('game-search')?.value.trim().toLowerCase() || '';
+            let visibleCount = 0;
+
+            document.querySelectorAll('.game-card').forEach((card) => {
+                const matchesCategory = activeFilter === 'all' || card.dataset.category === activeFilter;
+                const matchesSearch = !query || card.textContent.toLowerCase().includes(query);
+                const isVisible = matchesCategory && matchesSearch;
+                card.hidden = !isVisible;
+                if (isVisible) visibleCount += 1;
+            });
+
+            if (emptyState) {
+                emptyState.classList.toggle('visible', visibleCount === 0);
+            }
+        };
+
         document.querySelectorAll('.filter-pill').forEach((filter) => {
             filter.addEventListener('click', () => {
                 document.querySelectorAll('.filter-pill').forEach((item) => item.classList.remove('active'));
                 filter.classList.add('active');
-                const category = filter.dataset.filter;
-                document.querySelectorAll('.game-card').forEach((card) => {
-                    card.hidden = category !== 'all' && card.dataset.category !== category;
-                });
+                updateVisibleCards();
             });
         });
 
-        document.getElementById('game-search').addEventListener('input', (event) => {
-            const query = event.target.value.trim().toLowerCase();
-            document.querySelectorAll('.game-card').forEach((card) => {
-                card.hidden = query !== '' && !card.textContent.toLowerCase().includes(query);
-            });
-        });
+        const searchInput = document.getElementById('game-search');
+        if (searchInput) {
+            searchInput.addEventListener('input', updateVisibleCards);
+        }
 
         document.querySelectorAll('.download-btn').forEach((button) => {
+            button.dataset.defaultLabel = button.textContent.trim();
             button.addEventListener('click', () => {
-                const game = button.closest('.game-card, .download-item')?.querySelector('h3, h4')?.textContent.trim() || 'Game';
-                button.textContent = 'Added';
-                showToast(`${game} was added to your library.`);
+                const title = button.closest('.game-card, .download-item')?.querySelector('h3, h4')?.textContent.trim() || 'Game';
+                const isAdded = libraryState.has(title);
+                if (isAdded) {
+                    showToast(`${title} is already saved in your library.`);
+                    return;
+                }
+                addGameToLibrary(title);
             });
         });
 
-        document.getElementById('library-button').addEventListener('click', () => showToast('Your library is ready for the games you add.'));
+        document.querySelectorAll('.game-card').forEach((card) => {
+            const footer = card.querySelector('.game-footer');
+            if (!footer) return;
+
+            const favoriteBtn = document.createElement('button');
+            favoriteBtn.type = 'button';
+            favoriteBtn.className = 'favorite-toggle';
+            favoriteBtn.setAttribute('aria-label', 'Save to favorites');
+            favoriteBtn.innerHTML = '<i class="far fa-heart"></i>';
+
+            favoriteBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                const title = card.querySelector('h3')?.textContent.trim() || 'Game';
+                const isFavorite = card.classList.toggle('is-favorite');
+                if (isFavorite) {
+                    addGameToLibrary(title);
+                } else {
+                    libraryState.delete(title);
+                    saveLibrary();
+                    renderLibrary();
+                    refreshGameButtons();
+                    showToast(`${title} was removed from your library.`);
+                }
+                favoriteBtn.innerHTML = isFavorite ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>';
+            });
+
+            footer.appendChild(favoriteBtn);
+        });
+
+        const openLibrary = () => {
+            libraryPanel.classList.add('open');
+            renderLibrary();
+        };
+
+        const closeLibrary = () => {
+            libraryPanel.classList.remove('open');
+        };
+
+        libraryButton.addEventListener('click', openLibrary);
+        document.getElementById('library-close').addEventListener('click', closeLibrary);
+
+        document.body.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && libraryPanel.classList.contains('open')) {
+                closeLibrary();
+            }
+        });
+
+        const newsletterForm = document.getElementById('newsletter-form');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const emailInput = document.getElementById('newsletter-email');
+                const email = emailInput.value.trim();
+
+                if (!email || !email.includes('@')) {
+                    showToast('Enter a valid email to subscribe.');
+                    emailInput.focus();
+                    return;
+                }
+
+                emailInput.value = '';
+                showToast('Subscribed! New game drops will find you soon.');
+            });
+        }
+
+        renderLibrary();
+        refreshGameButtons();
+        updateVisibleCards();
     </script>
 </body>
 
