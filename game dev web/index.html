@@ -180,12 +180,26 @@
             color: #dfe9f6 !important;
             font-weight: 600;
             letter-spacing: 0.02em;
+            text-decoration: none !important;
+            border-bottom: none !important;
+            box-shadow: none !important;
             transition: color 0.22s ease, transform 0.22s ease, text-shadow 0.22s ease;
         }
 
-        .main_menu .main-menu-item .nav-item a:hover {
+        .main_menu .main-menu-item .nav-item a::before,
+        .main_menu .main-menu-item .nav-item a::after {
+            content: none !important;
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        .main_menu .main-menu-item .nav-item a:hover,
+        .main_menu .main-menu-item .nav-item a:focus {
             color: var(--store-accent) !important;
             transform: translateY(-1px);
+            text-decoration: none !important;
+            border-bottom: none !important;
             text-shadow: 0 0 14px rgba(103, 232, 183, 0.4);
         }
 
