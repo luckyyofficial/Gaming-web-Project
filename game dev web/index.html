@@ -875,6 +875,233 @@
             padding: 30px 0 40px;
         }
 
+        .stats-strip {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .stat-box {
+            padding: 20px 18px;
+            border-radius: 22px;
+            border: 1px solid var(--store-line);
+            background: rgba(14, 24, 36, 0.9);
+            min-height: 144px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .stat-box span {
+            color: var(--store-muted);
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .stat-box strong {
+            font-size: clamp(1.8rem, 2.7vw, 2.7rem);
+            letter-spacing: -0.06em;
+        }
+
+        .stat-box p {
+            margin: 0;
+            color: var(--store-muted);
+            line-height: 1.6;
+            font-size: 0.82rem;
+        }
+
+        .live-dashboard {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 20px;
+            margin-bottom: 10px;
+        }
+
+        .event-card, .mission-card {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, rgba(12, 22, 35, 0.97), rgba(8, 15, 24, 0.95));
+            border: 1px solid var(--store-line);
+            border-radius: 28px;
+            padding: 24px;
+            box-shadow: 0 24px 50px rgba(2, 8, 16, 0.38);
+        }
+
+        .event-card::before, .mission-card::before {
+            content: "";
+            position: absolute;
+            inset: auto -38px -44px auto;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(103, 232, 183, 0.15), transparent 60%);
+        }
+
+        .event-card h3, .mission-card h3 {
+            margin: 12px 0 10px;
+            font-size: clamp(1.8rem, 2vw, 2.6rem);
+            letter-spacing: -0.05em;
+        }
+
+        .event-card p {
+            color: var(--store-muted);
+            margin: 0 0 18px;
+            line-height: 1.8;
+            max-width: 56ch;
+        }
+
+        .countdown {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin: 20px 0 22px;
+        }
+
+        .countdown div {
+            border: 1px solid var(--store-line);
+            border-radius: 16px;
+            background: rgba(255,255,255,0.02);
+            padding: 14px 8px;
+            text-align: center;
+        }
+
+        .countdown span {
+            display: block;
+            font-size: clamp(1.5rem, 2vw, 2.2rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+        }
+
+        .countdown small {
+            color: var(--store-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.68rem;
+        }
+
+        .cta-group.compact {
+            margin-top: 0;
+        }
+
+        .mission-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .mission-score {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 10px;
+            border-radius: 999px;
+            background: rgba(103, 232, 183, 0.12);
+            border: 1px solid rgba(103, 232, 183, 0.2);
+            color: var(--store-accent);
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .mission-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 12px;
+        }
+
+        .mission-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 14px;
+            border: 1px solid var(--store-line);
+            background: rgba(255,255,255,0.02);
+            border-radius: 16px;
+        }
+
+        .mission-item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .mission-item strong {
+            color: var(--store-text);
+            font-size: 0.82rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .mission-item span {
+            color: var(--store-muted);
+            font-size: 0.8rem;
+        }
+
+        .progress-stack {
+            width: 110px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.06);
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .progress-bar span {
+            display: block;
+            height: 100%;
+            width: var(--progress);
+            border-radius: inherit;
+            background: linear-gradient(90deg, var(--store-accent), var(--store-accent-2));
+        }
+
+        .mission-item small {
+            color: var(--store-muted);
+            font-size: 0.72rem;
+        }
+
+        .back-to-top {
+            position: fixed;
+            right: 22px;
+            bottom: 92px;
+            width: 48px;
+            height: 48px;
+            border: 1px solid rgba(103, 232, 183, 0.28);
+            border-radius: 14px;
+            background: rgba(8, 16, 24, 0.9);
+            color: var(--store-text);
+            display: grid;
+            place-items: center;
+            box-shadow: 0 18px 30px rgba(0,0,0,0.2);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.25s ease;
+            z-index: 30;
+            cursor: pointer;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
         @keyframes pulseGlow {
             0%, 100% {
                 box-shadow: 0 14px 24px rgba(103, 232, 183, 0.18);
@@ -1041,6 +1268,93 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="store-section" id="player-dashboard">
+            <div class="container">
+                <div class="stats-strip">
+                    <div class="stat-box">
+                        <span>Players online</span>
+                        <strong>1.2M+</strong>
+                        <p>League matches firing right now across every region.</p>
+                    </div>
+                    <div class="stat-box">
+                        <span>Downloads today</span>
+                        <strong>86K</strong>
+                        <p>Fresh installs this week from our community picks.</p>
+                    </div>
+                    <div class="stat-box">
+                        <span>Avg. session</span>
+                        <strong>3.4h</strong>
+                        <p>Most players stay active for co-op and PvP events.</p>
+                    </div>
+                    <div class="stat-box">
+                        <span>Reward rate</span>
+                        <strong>98%</strong>
+                        <p>Players unlock missions and perks with regular drops.</p>
+                    </div>
+                </div>
+
+                <div class="live-dashboard">
+                    <div class="event-card">
+                        <span class="eyebrow">Live event</span>
+                        <h3>Neon Siege Weekend</h3>
+                        <p>Queue into elite PvP arena rounds, finish the mission ladder, and unlock the limited Pulse Knight skin before the challenge closes.</p>
+                        <div class="countdown" id="event-countdown" aria-live="polite">
+                            <div><span id="days">00</span><small>Days</small></div>
+                            <div><span id="hours">00</span><small>Hours</small></div>
+                            <div><span id="minutes">00</span><small>Minutes</small></div>
+                            <div><span id="seconds">00</span><small>Seconds</small></div>
+                        </div>
+                        <div class="cta-group compact">
+                            <button type="button" class="btn_1 event-action" data-event="Neon Siege Weekend">Join event</button>
+                            <button type="button" class="btn_2 event-action" data-event="Reward path">View rewards</button>
+                        </div>
+                    </div>
+
+                    <div class="mission-card">
+                        <div class="mission-header">
+                            <div>
+                                <span class="eyebrow">Daily missions</span>
+                                <h3>Today’s goals</h3>
+                            </div>
+                            <span class="mission-score">+240 XP</span>
+                        </div>
+                        <ul class="mission-list">
+                            <li class="mission-item">
+                                <div class="mission-item-info">
+                                    <strong>Quick win</strong>
+                                    <span>Win 3 matches</span>
+                                </div>
+                                <div class="progress-stack">
+                                    <div class="progress-bar" style="--progress: 75%"><span></span></div>
+                                    <small>75%</small>
+                                </div>
+                            </li>
+                            <li class="mission-item">
+                                <div class="mission-item-info">
+                                    <strong>Team play</strong>
+                                    <span>Complete 2 co-op raids</span>
+                                </div>
+                                <div class="progress-stack">
+                                    <div class="progress-bar" style="--progress: 55%"><span></span></div>
+                                    <small>55%</small>
+                                </div>
+                            </li>
+                            <li class="mission-item">
+                                <div class="mission-item-info">
+                                    <strong>Collector</strong>
+                                    <span>Claim 5 rewards</span>
+                                </div>
+                                <div class="progress-stack">
+                                    <div class="progress-bar" style="--progress: 88%"><span></span></div>
+                                    <small>88%</small>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -1424,6 +1738,12 @@
         const libraryButton = document.getElementById('library-button');
         const emptyState = document.getElementById('empty-state');
         const libraryStorageKey = 'beko-play-library';
+        const backToTopButton = document.createElement('button');
+        backToTopButton.type = 'button';
+        backToTopButton.className = 'back-to-top';
+        backToTopButton.setAttribute('aria-label', 'Back to top');
+        backToTopButton.innerHTML = '<i class="fas fa-arrow-up"></i>';
+        document.body.appendChild(backToTopButton);
 
         const showToast = (message) => {
             toast.textContent = message;
@@ -1605,6 +1925,53 @@
                 showToast('Subscribed! New game drops will find you soon.');
             });
         }
+
+        const targetDate = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000 + 6 * 60 * 60 * 1000 + 18 * 60 * 1000 + 42 * 1000);
+        const countdownFields = {
+            days: document.getElementById('days'),
+            hours: document.getElementById('hours'),
+            minutes: document.getElementById('minutes'),
+            seconds: document.getElementById('seconds')
+        };
+
+        const updateCountdown = () => {
+            const diff = targetDate.getTime() - Date.now();
+            if (diff <= 0) {
+                countdownFields.days.textContent = '00';
+                countdownFields.hours.textContent = '00';
+                countdownFields.minutes.textContent = '00';
+                countdownFields.seconds.textContent = '00';
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            countdownFields.days.textContent = String(days).padStart(2, '0');
+            countdownFields.hours.textContent = String(hours).padStart(2, '0');
+            countdownFields.minutes.textContent = String(minutes).padStart(2, '0');
+            countdownFields.seconds.textContent = String(seconds).padStart(2, '0');
+        };
+
+        updateCountdown();
+        window.setInterval(updateCountdown, 1000);
+
+        document.querySelectorAll('.event-action').forEach((button) => {
+            button.addEventListener('click', () => {
+                const eventName = button.dataset.event || 'Event';
+                showToast(`${eventName} is live. Check the lobby for your next match.`);
+            });
+        });
+
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        window.addEventListener('scroll', () => {
+            backToTopButton.classList.toggle('visible', window.scrollY > 420);
+        });
 
         renderLibrary();
         refreshGameButtons();
