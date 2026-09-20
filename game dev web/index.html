@@ -1990,10 +1990,10 @@
                                 </ul>
                             </div>
                             <div class="nav-actions">
-                                <label class="store-search" aria-label="Search games">
+                                <form class="store-search" id="game-search-form" role="search" aria-label="Search games">
                                     <i class="fas fa-search" aria-hidden="true"></i>
                                     <input id="game-search" type="search" placeholder="Search games" autocomplete="off">
-                                </label>
+                                </form>
                                 <button class="nav-icon-btn" type="button" id="library-button" aria-label="Open library"><i class="fas fa-bookmark" aria-hidden="true"></i></button>
                             </div>
                             <a href="#featured" class="btn_1 header-cta d-none d-sm-block">Play free</a>
@@ -2858,14 +2858,25 @@
         });
 
         const searchInput = document.getElementById('game-search');
+        const searchForm = document.getElementById('game-search-form');
+
         if (searchInput) {
             searchInput.addEventListener('input', updateVisibleCards);
+            searchInput.addEventListener('search', updateVisibleCards);
             searchInput.addEventListener('keydown', (event) => {
                 if (event.key === 'Enter') {
                     event.preventDefault();
                     updateVisibleCards();
                     searchInput.blur();
                 }
+            });
+        }
+
+        if (searchForm) {
+            searchForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                updateVisibleCards();
+                searchInput?.blur();
             });
         }
 
