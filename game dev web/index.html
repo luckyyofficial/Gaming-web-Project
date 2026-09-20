@@ -1993,6 +1993,7 @@
                                 <form class="store-search" id="game-search-form" role="search" aria-label="Search games">
                                     <i class="fas fa-search" aria-hidden="true"></i>
                                     <input id="game-search" type="search" placeholder="Search games" autocomplete="off">
+                                    <button type="submit" aria-label="Search games" style="display:none"></button>
                                 </form>
                                 <button class="nav-icon-btn" type="button" id="library-button" aria-label="Open library"><i class="fas fa-bookmark" aria-hidden="true"></i></button>
                             </div>
@@ -2860,14 +2861,22 @@
         const searchInput = document.getElementById('game-search');
         const searchForm = document.getElementById('game-search-form');
 
+        const submitSearch = () => {
+            updateVisibleCards();
+            searchInput?.blur();
+        };
+
         if (searchInput) {
             searchInput.addEventListener('input', updateVisibleCards);
-            searchInput.addEventListener('search', updateVisibleCards);
+            searchInput.addEventListener('search', submitSearch);
             searchInput.addEventListener('keydown', (event) => {
                 if (event.key === 'Enter') {
                     event.preventDefault();
-                    updateVisibleCards();
-                    searchInput.blur();
+                    if (searchForm) {
+                        searchForm.requestSubmit();
+                    } else {
+                        submitSearch();
+                    }
                 }
             });
         }
@@ -2875,8 +2884,7 @@
         if (searchForm) {
             searchForm.addEventListener('submit', (event) => {
                 event.preventDefault();
-                updateVisibleCards();
-                searchInput?.blur();
+                submitSearch();
             });
         }
 
