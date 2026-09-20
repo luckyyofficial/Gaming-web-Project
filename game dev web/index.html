@@ -2390,7 +2390,7 @@
 
                 <div class="game-grid">
                     <div class="empty-state" id="empty-state" aria-live="polite">No games match your current search. Try another title or filter.</div>
-                    <article class="game-card" data-category="action">
+                    <article class="game-card" data-category="action" data-title="Skybound Legends">
                         <div class="game-thumb" style="background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=900&q=80');">
                             <span class="game-badge">Action</span>
                         </div>
@@ -2408,7 +2408,7 @@
                         </div>
                     </article>
 
-                    <article class="game-card" data-category="rpg">
+                    <article class="game-card" data-category="rpg" data-title="Nightfall Guild">
                         <div class="game-thumb" style="background-image: url('https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80');">
                             <span class="game-badge">RPG</span>
                         </div>
@@ -2426,7 +2426,7 @@
                         </div>
                     </article>
 
-                    <article class="game-card" data-category="racing">
+                    <article class="game-card" data-category="racing" data-title="Velocity Drift">
                         <div class="game-thumb" style="background-image: url('https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=900&q=80');">
                             <span class="game-badge">Racing</span>
                         </div>
@@ -2444,7 +2444,7 @@
                         </div>
                     </article>
 
-                    <article class="game-card" data-category="strategy">
+                    <article class="game-card" data-category="strategy" data-title="Empire Tactics">
                         <div class="game-thumb" style="background-image: url('img/latest_war_img.png');">
                             <span class="game-badge">Strategy</span>
                         </div>
@@ -2462,7 +2462,7 @@
                         </div>
                     </article>
 
-                    <article class="game-card" data-category="action">
+                    <article class="game-card" data-category="action" data-title="Crimson Siege">
                         <div class="game-thumb" style="background-image: url('https://images.unsplash.com/photo-1511884642898-4c92249e20b6?auto=format&fit=crop&w=900&q=80');">
                             <span class="game-badge">Arena</span>
                         </div>
@@ -2480,7 +2480,7 @@
                         </div>
                     </article>
 
-                    <article class="game-card" data-category="indie">
+                    <article class="game-card" data-category="indie" data-title="Echo Hollow">
                         <div class="game-thumb" style="background-image: url('https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?auto=format&fit=crop&w=900&q=80');">
                             <span class="game-badge">Indie</span>
                         </div>
@@ -2835,8 +2835,10 @@
             let visibleCount = 0;
 
             document.querySelectorAll('.game-card').forEach((card) => {
-                const matchesCategory = activeFilter === 'all' || card.dataset.category === activeFilter;
-                const matchesSearch = !query || card.textContent.toLowerCase().includes(query);
+                const title = (card.dataset.title || card.querySelector('h3')?.textContent || '').trim().toLowerCase();
+                const category = (card.dataset.category || '').trim().toLowerCase();
+                const matchesCategory = activeFilter === 'all' || category === activeFilter;
+                const matchesSearch = !query || title.includes(query) || category.includes(query);
                 const isVisible = matchesCategory && matchesSearch;
                 card.hidden = !isVisible;
                 if (isVisible) visibleCount += 1;
