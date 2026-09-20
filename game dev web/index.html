@@ -2860,6 +2860,13 @@
         const searchInput = document.getElementById('game-search');
         if (searchInput) {
             searchInput.addEventListener('input', updateVisibleCards);
+            searchInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    updateVisibleCards();
+                    searchInput.blur();
+                }
+            });
         }
 
         document.querySelectorAll('.download-btn').forEach((button) => {
